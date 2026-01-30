@@ -51,6 +51,7 @@ Follow the loaded workflow instructions exactly.
 - ANY user interaction
 
 **NEVER return control without using AskUserQuestion.**
+**ALWAYS** start subagents for each step in workflow to maintain context clarity.
 
 ---
 
