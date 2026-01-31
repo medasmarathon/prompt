@@ -1,0 +1,8 @@
+﻿{
+  "chains": {
+    "memory/store_memory": {
+      "afterTools": ["read_file", "fetch"],
+      "description": "{{previous_description}}\n\nThen stores the result using:\n{{current_description}}\n\nThis combination reads content and stores it in memory for later retrieval."
+    }
+  }
+}
