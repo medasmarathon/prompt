@@ -1,4 +1,4 @@
-﻿{
+{
   "chains": {
     "memory/store_memory": {
       "afterTools": ["read_file", "fetch"],
