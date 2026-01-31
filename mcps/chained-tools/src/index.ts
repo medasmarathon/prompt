@@ -16,6 +16,7 @@ import type {
   ChainedToolInfo,
   ParsedChainTarget,
   ChainConfig,
+  ToolInputSchema,
 } from "./types.js";
 
 // Global state
@@ -101,7 +102,7 @@ function buildChainedDescription(
       .replace(/\{\{previous_description\}\}/g, toolADescription)
       .replace(/\{\{current_description\}\}/g, toolBDescription);
   }
-  
+
   return defaultDescription;
 }
 
@@ -116,24 +117,21 @@ function buildChainedDescription(
 function buildChainedSchema(
   toolA: ToolInfo,
   toolB: ToolInfo
-): Record<string, unknown> {
-  const schemaA = toolA.inputSchema as Record<string, unknown>;
-  const schemaB = toolB.inputSchema as Record<string, unknown>;
-
+): ToolInputSchema {
   return {
     type: "object",
     properties: {
       [toolA.name]: {
         type: "object",
         description: `Parameters for ${toolA.name}`,
-        properties: (schemaA.properties as Record<string, unknown>) || {},
-        required: (schemaA.required as string[]) || [],
+        properties: (toolA.inputSchema.properties || {}) as Record<string, object>,
+        required: toolA.inputSchema.required || [],
       },
       [toolB.name]: {
         type: "object",
         description: `Parameters for ${toolB.name}`,
-        properties: (schemaB.properties as Record<string, unknown>) || {},
-        required: (schemaB.required as string[]) || [],
+        properties: (toolB.inputSchema.properties || {}) as Record<string, object>,
+        required: toolB.inputSchema.required || [],
       },
     },
     required: [toolA.name, toolB.name],
@@ -142,18 +140,32 @@ function buildChainedSchema(
 
 /**
  * Find a tool by name across all servers.
+ * Supports multiple formats:
+ * - "toolName" - finds first tool with that name
+ * - "serverName/toolName" - finds specific tool from specific server
+ * - "serverName_toolName" - finds tool with underscore-prefixed name
  */
 function findToolByName(
-  toolName: string,
+  toolNameOrPath: string,
   serverTools: Map<string, ToolInfo[]>
 ): ToolInfo | undefined {
+  // Check if it's in "serverName/toolName" format
+  const slashIndex = toolNameOrPath.indexOf("/");
+  if (slashIndex !== -1) {
+    const serverName = toolNameOrPath.substring(0, slashIndex);
+    const toolName = toolNameOrPath.substring(slashIndex + 1);
+    return findToolByServerAndName(serverName, toolName, serverTools);
+  }
+
+  // Search across all servers
   for (const [serverName, tools] of serverTools) {
     for (const tool of tools) {
-      if (tool.name === toolName) {
+      // Direct name match
+      if (tool.name === toolNameOrPath) {
         return tool;
       }
-      // Check if toolName is server_toolname format
-      if (toolName === `${serverName}_${tool.name}`) {
+      // Check if toolNameOrPath is server_toolname format
+      if (toolNameOrPath === `${serverName}_${tool.name}`) {
         return tool;
       }
     }
@@ -199,10 +211,16 @@ async function initializeTools(): Promise<void> {
     allTools = await clientManager.discoverAllTools();
 
     // Build set of tools that are part of chains (as "A" tools - trigger tools)
+    // Store the full path (serverName/toolName or just toolName) for tracking
     const chainedATools = new Set<string>();
     for (const chainConfig of Object.values(chainsConfig.chains)) {
-      for (const toolName of chainConfig.afterTools) {
-        chainedATools.add(toolName);
+      for (const toolPath of chainConfig.afterTools) {
+        chainedATools.add(toolPath);
+        // Also add just the tool name for passthrough exclusion (without server prefix)
+        const parsed = parseChainTarget(toolPath);
+        if (parsed.toolName) {
+          chainedATools.add(parsed.toolName);
+        }
       }
     }
 
@@ -259,11 +277,11 @@ async function initializeTools(): Promise<void> {
       }
 
       // For each trigger tool in afterTools
-      for (const triggerToolName of chainConfig.afterTools) {
-        // Find the trigger tool (A tool)
-        const toolA = findToolByName(triggerToolName, allTools);
+      for (const triggerToolPath of chainConfig.afterTools) {
+        // Find the trigger tool (A tool) - now supports serverName/toolName format
+        const toolA = findToolByName(triggerToolPath, allTools);
         if (!toolA) {
-          console.error(`Warning: Trigger tool not found: ${triggerToolName}`);
+          console.error(`Warning: Trigger tool not found: ${triggerToolPath}`);
           continue;
         }
 
@@ -291,13 +309,14 @@ async function initializeTools(): Promise<void> {
 
     // Process passthrough tools
     // A tool is passthrough if it's NOT:
-    // 1. Listed in any afterTools array (A tools)
+    // 1. Listed in any afterTools array (A tools) - by name or full path
     // 2. A specific B tool mentioned in chains (serverName/toolName format)
     // 3. From a server that has all its tools chained (serverName format without specific tool)
     // 4. From a server marked with forChained: true
     for (const [serverName, tools] of allTools) {
       for (const tool of tools) {
-        const isATool = chainedATools.has(tool.name);
+        // Check both the tool name and the full path (serverName/toolName)
+        const isATool = chainedATools.has(tool.name) || chainedATools.has(`${serverName}/${tool.name}`);
         const isSpecificBTool = chainedBTools.has(`${serverName}/${tool.name}`);
         const isFromFullChainServer = fullChainServers.has(serverName);
         const isFromForChainedServer = forChainedServers.has(serverName);

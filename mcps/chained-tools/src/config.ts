@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Configuration loading for chained-tools MCP server.
  */
 
@@ -60,7 +60,20 @@ export function loadAllConfigs(): {
 }
 
 /**
+ * Parse a chain key to extract the server name.
+ * Chain keys can be "serverName" or "serverName/toolName".
+ */
+function parseServerNameFromChainKey(chainKey: string): string {
+  const slashIndex = chainKey.indexOf("/");
+  if (slashIndex === -1) {
+    return chainKey;
+  }
+  return chainKey.substring(0, slashIndex);
+}
+
+/**
  * Validate that chains reference valid servers.
+ * This should be called AFTER servers are configured but does NOT require them to be started.
  */
 export function validateChainsConfig(
   serversConfig: MCPServersConfig,
@@ -69,9 +82,12 @@ export function validateChainsConfig(
   const warnings: string[] = [];
   const serverNames = new Set(Object.keys(serversConfig.mcpServers));
 
-  for (const chainServer of Object.keys(chainsConfig.chains)) {
-    if (!serverNames.has(chainServer)) {
-      warnings.push(`Chain references unknown server: ${chainServer}`);
+  for (const chainKey of Object.keys(chainsConfig.chains)) {
+    // Extract server name from chain key (handles both "server" and "server/tool" formats)
+    const serverName = parseServerNameFromChainKey(chainKey);
+    
+    if (!serverNames.has(serverName)) {
+      warnings.push(`Chain references unknown server: ${serverName} (from chain key: ${chainKey})`);
     }
   }
 

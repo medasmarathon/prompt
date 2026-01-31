@@ -1,11 +1,11 @@
-/**
+﻿/**
  * MCP client for communicating with MCP servers.
  */
 
 import { spawn, ChildProcess } from "child_process";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
-import type { ServerConfig, ToolInfo, ToolCallResult } from "./types.js";
+import type { ServerConfig, ToolInfo, ToolCallResult, ToolInputSchema } from "./types.js";
 
 /**
  * Manages connections to multiple MCP servers.
@@ -37,11 +37,25 @@ export class MCPClientManager {
       throw new Error(`Unknown server: ${serverName}`);
     }
 
+    // Build env object with only string values (filter out undefined)
+    const env: Record<string, string> = {};
+    for (const [key, value] of Object.entries(process.env)) {
+      if (value !== undefined) {
+        env[key] = value;
+      }
+    }
+    // Add config env vars
+    if (config.env) {
+      for (const [key, value] of Object.entries(config.env)) {
+        env[key] = value;
+      }
+    }
+
     // Create transport
     const transport = new StdioClientTransport({
       command: config.command,
       args: config.args || [],
-      env: { ...process.env, ...(config.env || {}) },
+      env,
     });
 
     // Create client
@@ -80,7 +94,7 @@ export class MCPClientManager {
     const tools: ToolInfo[] = result.tools.map((tool) => ({
       name: tool.name,
       description: tool.description || "",
-      inputSchema: tool.inputSchema as Record<string, unknown>,
+      inputSchema: tool.inputSchema as ToolInputSchema,
       serverName,
     }));
 
@@ -104,10 +118,11 @@ export class MCPClientManager {
       });
 
       // Extract content from result
-      if (result.content && result.content.length > 0) {
-        const contents = result.content.map((item) => {
-          if ("text" in item) return item.text;
-          if ("data" in item) return item.data;
+      const content = result.content as Array<{ type: string; text?: string; data?: string }> | undefined;
+      if (content && Array.isArray(content) && content.length > 0) {
+        const contents = content.map((item) => {
+          if ("text" in item && item.text) return item.text;
+          if ("data" in item && item.data) return item.data;
           return String(item);
         });
 

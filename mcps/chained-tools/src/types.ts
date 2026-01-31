@@ -2,6 +2,14 @@
  * Type definitions for chained-tools MCP server.
  */
 
+/** JSON Schema type for tool input - matches MCP SDK expectations */
+export interface ToolInputSchema {
+  type: "object";
+  properties?: Record<string, object>;
+  required?: string[];
+  [key: string]: unknown;
+}
+
 /** Configuration for a single MCP server (Claude Desktop compatible) */
 export interface ServerConfig {
   command: string;
@@ -16,7 +24,7 @@ export interface MCPServersConfig {
   mcpServers: Record<string, ServerConfig>;
 }
 
-/** 
+/**
  * Configuration for a single chain.
  * The key in the chains object can be:
  * - "serverName" - uses ALL tools from that server
@@ -25,10 +33,11 @@ export interface MCPServersConfig {
 export interface ChainConfig {
   /** List of trigger tools (A tools) that will be chained with B tools */
   afterTools: string[];
-  /** 
+  /**
    * Optional description override for the chained tool.
-   * Use {{previous_description}} to include the auto-generated description.
-   * Example: "{{previous_description}} This combination is useful for caching."
+   * Supports template placeholders:
+   * - {{previous_description}} - Tool A description
+   * - {{current_description}} - Tool B description
    */
   description?: string;
 }
@@ -42,7 +51,7 @@ export interface ChainsConfig {
 export interface ToolInfo {
   name: string;
   description: string;
-  inputSchema: Record<string, unknown>;
+  inputSchema: ToolInputSchema;
   serverName: string;
 }
 
@@ -52,7 +61,7 @@ export interface ChainedToolInfo {
   toolA: ToolInfo;
   toolB: ToolInfo;
   description: string;
-  inputSchema: Record<string, unknown>;
+  inputSchema: ToolInputSchema;
 }
 
 /** Result from calling a tool */

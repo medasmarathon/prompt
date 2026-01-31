@@ -8,7 +8,7 @@ An MCP server that chains MCP tools together for composite operations. It allows
 
 - **True Dynamic Tools**: Tools are discovered at runtime and exposed with proper schemas
 - **Tool Chaining**: Automatically invoke tool B after tool A completes
-- **Specific Tool Targeting**: Chain specific tools using `serverName/toolName` format
+- **Specific Tool Targeting**: Chain specific tools using `serverName/toolName` format (works in both chain keys AND afterTools)
 - **Custom Descriptions**: Override chained tool descriptions with `{{previous_description}}` and `{{current_description}}` templates
 - **Passthrough Support**: Tools not in any chain are exposed normally
 - **forChained Flag**: Mark servers as "chained-only" to prevent their tools from being exposed as standalone
@@ -64,11 +64,11 @@ This follows the Claude Desktop configuration format with an additional `forChai
 {
   "chains": {
     "serverName": {
-      "afterTools": ["tool1", "tool2"],
+      "afterTools": ["tool1", "serverA/tool2"],
       "description": "Optional custom description with {{previous_description}} and {{current_description}}"
     },
     "serverName/specificTool": {
-      "afterTools": ["tool3"]
+      "afterTools": ["tool3", "serverB/tool4"]
     }
   }
 }
@@ -78,7 +78,7 @@ This follows the Claude Desktop configuration format with an additional `forChai
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `afterTools` | string[] | Yes | List of trigger tools (A tools) that will be chained with B tools |
+| `afterTools` | string[] | Yes | List of trigger tools (A tools) that will be chained with B tools. Supports both `"toolName"` and `"serverName/toolName"` formats |
 | `description` | string | No | Custom description template with placeholder support |
 
 #### Chain Key Formats
@@ -87,6 +87,17 @@ This follows the Claude Desktop configuration format with an additional `forChai
 |--------|-------------|---------|
 | `serverName` | Use ALL tools from the server as B tools | `"memory": { "afterTools": [...] }` |
 | `serverName/toolName` | Use ONLY the specific tool as B tool | `"memory/store_memory": { "afterTools": [...] }` |
+
+#### afterTools Formats
+
+The `afterTools` array also supports both formats:
+
+| Format | Description | Example |
+|--------|-------------|---------|
+| `toolName` | Finds the tool by name across all servers | `"read_file"` |
+| `serverName/toolName` | Finds the specific tool from the specific server | `"filesystem/read_file"` |
+
+Using `serverName/toolName` in afterTools is recommended when multiple servers have tools with the same name.
 
 #### Custom Description Template
 
@@ -114,21 +125,11 @@ FINALLY
 {
   "chains": {
     "memory/store_memory": {
-      "afterTools": ["read_file"],
+      "afterTools": ["filesystem/read_file"],
       "description": "{{previous_description}}\n\nThen caches the result:\n{{current_description}}\n\nUse this to read and cache file content."
     }
   }
 }
-```
-
-This produces a description like:
-```
-Reads a file from the filesystem.
-
-Then caches the result:
-Stores content in memory.
-
-Use this to read and cache file content.
 ```
 
 ## Tool Exposure Rules
@@ -140,7 +141,7 @@ Use this to read and cache file content.
    - Each trigger tool (A) is paired with specified B tools
 
 3. **Passthrough exclusions**: A tool is NOT exposed as passthrough if:
-   - It's listed in any `afterTools` array (A tools)
+   - It's listed in any `afterTools` array (A tools) - by name or full path
    - It's a specific B tool mentioned in chains (`serverName/toolName` format)
    - It's from a server that has all tools chained (`serverName` format)
    - It's from a server marked with `forChained: true`
@@ -215,6 +216,10 @@ Add to your Claude Desktop config:
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-memory"],
       "forChained": true
+    },
+    "serena": {
+      "command": "uvx",
+      "args": ["--from", "git+https://github.com/oraios/serena", "serena", "start-mcp-server"]
     }
   }
 }
@@ -223,7 +228,7 @@ Add to your Claude Desktop config:
 {
   "chains": {
     "memory/store_memory": {
-      "afterTools": ["read_file"],
+      "afterTools": ["filesystem/read_file", "serena/read_file"],
       "description": "{{previous_description}}\n\nThen: {{current_description}}\n\nUse this to read and cache file content."
     }
   }
@@ -231,10 +236,10 @@ Add to your Claude Desktop config:
 ```
 
 With this configuration:
-- `filesystem` tools are exposed as passthrough (e.g., `list_allowed_directories`)
-- `read_file` is exposed ONLY through the chained tool `chained_read_file_with_store_memory`
-- `memory/store_memory` is used in the chain with custom description
-- `memory/get_memory` is NOT exposed at all (because `forChained: true` and it's not mentioned)
+- `filesystem` tools are exposed as passthrough (except `read_file` which is chained)
+- `serena` tools are exposed as passthrough (except `read_file` which is chained)
+- Both `filesystem/read_file` and `serena/read_file` are chained with `memory/store_memory`
+- `memory` tools are NOT exposed at all (because `forChained: true`)
 
 ## Example Configuration
 
