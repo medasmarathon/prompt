@@ -32,6 +32,6 @@ For each topic, document:
 - What to avoid (mistakes, edge cases)
 - Trust level (official=high, community=medium)
 
-Write to `.opencode/reasoning/03-research-requirements.md`.
+Write to `.opencode/reasoning/04-research-requirements.md`.
 
 Use AskUserQuestion: "Research complete. [X] topics done. Key: [2-3 points]. Ready for Step 4?"

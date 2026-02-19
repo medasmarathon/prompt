@@ -16,7 +16,8 @@ Analyze how the project organizes and names files:
 - **File structure**: feature-based, layer-based, domain-driven, monorepo, colocation
 - **Index files**: barrel exports, re-export patterns
 - **Formatting configs**: .prettierrc, .editorconfig, pyproject.toml, etc.
-- **Linting configs**: .eslintrc*, .pylintrc, uff.toml, etc.
+- **Linting configs**: .eslintrc*, .pylintrc, 
+uff.toml, etc.
 
 Use `list_dir` to analyze existing file patterns. Use `find_file` to locate config files.
 
@@ -40,7 +41,7 @@ If user request affects deployment, testing, or workflows:
 Only investigate if changes impact these areas.
 
 ## Output
-Write findings to `.opencode/reasoning/035-project-conventions.md`.
+Write findings to `.opencode/reasoning/05-project-conventions.md`.
 
 Format:
 ```markdown
