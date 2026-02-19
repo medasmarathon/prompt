@@ -1,4 +1,4 @@
-# Step 7: Validation
+# Step 10: Validation
 
 You are validating: {{USER_REQUEST}}
 
@@ -21,24 +21,23 @@ For each criterion:
 
 ### 2. Run Full Test Suite
 Execute existing tests to ensure nothing broke:
-- Identify test command (e.g., 
-pm test, pytest, dotnet test)
+- Identify test command (e.g., npm test, pytest, dotnet test)
 - Run the full test suite
 - Document results: X/Y tests passed
 - If failures: Document which tests failed and why
 
 ### 3. Verify Existing Functionality
-Check that unrelated features still work:
+Check that unrelated features still work, cross-referencing the risks flagged in Step 6 (Logic Branching Discovery):
 - Review imports in modified files
 - Check that unchanged functions/classes still work
-- Verify no regressions in related features
+- Verify no regressions in related features flagged as 🔴 High Risk or 🟡 Medium Risk
 - Spot check 2-3 critical files for integration issues
 
 ### 4. Report Results
-Write to .opencode/reasoning/07-validation.md:
+Write to `.opencode/reasoning/10-validation.md`:
 
-markdown
-# Step 7: Validation
+```markdown
+# Step 10: Validation
 
 **User Request:** {{USER_REQUEST}}
 
@@ -63,6 +62,6 @@ markdown
 ## Overall Result
 **Status:** ✅ APPROVED / ❌ NEEDS FIXES
 **Ready:** Yes/No
+```
 
-
-Use AskUserQuestion: "Step 7 COMPLETE. Criteria: [X/Y passed]. Tests: [X/Y passed]. Regressions: [None/Found]. Ready? [Yes/No]"
+Use AskUserQuestion: "Step 10 COMPLETE. Criteria: [X/Y passed]. Tests: [X/Y passed]. Regressions: [None/Found]. Ready? [Yes/No]"

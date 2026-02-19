@@ -1,4 +1,4 @@
-# Step 6: Implementation Execution
+# Step 9: Implementation Execution
 
 You are implementing: {{USER_REQUEST}}
 
@@ -26,7 +26,7 @@ If creating new file:
 ### 2. Make the Change
 - Write the new/modified code
 - Use Write tool to save complete file
-- Follow the architecture from Step 4
+- Follow the architecture from Step 7
 - Match existing code style
 
 ### 3. Verify and Continue

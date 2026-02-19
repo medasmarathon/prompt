@@ -63,10 +63,19 @@ Load and follow: prompts/05-project-conventions.md
 
 ---
 
-### Step 6: Solution Architecture
+### Step 6: Logic Branching Discovery
+**Objective:** Trace execution paths, conditional branches, and cross-feature dependencies to surface potential conflicts and unexpected behaviors relevant to the task.
+
+Load and follow: prompts/06-logic-branching-discovery.md
+
+**User Request:** {{USER_REQUEST}}
+
+---
+
+### Step 7: Solution Architecture
 **Objective:** Design the conceptual solution or provide architectural insights.
 
-Load and follow: prompts/06-solution-architecture.md
+Load and follow: prompts/07-solution-architecture.md
 
 **User Request:** {{USER_REQUEST}}
 
@@ -74,9 +83,10 @@ Load and follow: prompts/06-solution-architecture.md
 
 ## Completion
 
-After completing Step 6, use **AskUserQuestion** to present your analysis:
+After completing Step 7, use **AskUserQuestion** (or similar tool to interact with user, if none such, use command line to ask, NEVER end your turn) to present your analysis:
 
 **Summary includes:**
 - Key findings from codebase analysis
 - Identified patterns and architectural insights
+- Logic branches and cross-feature risks discovered
 - Recommendations or observations

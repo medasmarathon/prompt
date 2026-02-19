@@ -45,13 +45,13 @@ Follow the loaded workflow instructions exactly.
 
 ## CRITICAL RULE
 
-**MANDATORY:** All agents MUST use AskUserQuestion for:
+**MANDATORY:** All agents (subagents) MUST use AskUserQuestion for:
 - Progress reports after each step
 - User confirmations
 - ANY user interaction
 
 **NEVER return control without using AskUserQuestion.**
-**ALWAYS** start subagents for each step in workflow to maintain context clarity.
+**ALWAYS** start subagents for each step in workflow to maintain context clarity. I will be very strict about this. Do not execute steps yourself. Always spawn an executor agent for each step.
 
 ---
 
@@ -59,4 +59,4 @@ Follow the loaded workflow instructions exactly.
 
 1. Identify workflow type using keywords
 2. Read appropriate workflow file
-3. Execute workflow steps
+3. Execute workflow steps WITH subagents for each step

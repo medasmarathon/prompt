@@ -1,4 +1,4 @@
-# Step 5: Implementation Plan
+# Step 8: Implementation Plan
 
 You are planning implementation for: {{USER_REQUEST}}
 
@@ -46,6 +46,6 @@ List tasks in order with these details:
 5. Create `tests/auth.test.ts` - Verify login works
 ```
 
-Write to `.opencode/reasoning/05-implementation-plan.md`.
+Write to `.opencode/reasoning/08-implementation-plan.md`.
 
 Use AskUserQuestion to report completion with task count.

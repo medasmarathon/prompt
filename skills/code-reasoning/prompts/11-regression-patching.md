@@ -1,6 +1,6 @@
-# Step 8.5: Regression Patching Scope Analysis (Optional)
+# Step 11: Regression Patching Scope Analysis (Optional)
 
-**TRIGGER:** Runs ONLY if Step 8 (Validation) found FAILED criteria or test failures.
+**TRIGGER:** Runs ONLY if Step 10 (Validation) found FAILED criteria or test failures.
 
 You are analyzing regression scope for: {{USER_REQUEST}}
 
@@ -24,7 +24,7 @@ Document: Minor [count], Major [count]
 **MINOR Path (≤2 major issues, no design flaws):**
 - List specific fixes with file paths
 - Apply targeted patches immediately
-- Return to Step 8 after fixes
+- Return to Step 10 after fixes
 
 **MAJOR Path (>2 major OR architectural flaw):**
 - Current approach fundamentally flawed
@@ -32,7 +32,7 @@ Document: Minor [count], Major [count]
 
 ### 3. Prepare Restart (MAJOR only)
 
-Write `.opencode/reasoning/085-regression-patching.md`:
+Write `.opencode/reasoning/11-regression-patching.md`:
 
 ```markdown
 # Regression Analysis - Restart Required

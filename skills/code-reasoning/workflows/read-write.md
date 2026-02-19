@@ -63,19 +63,28 @@ Load and follow: prompts/05-project-conventions.md
 
 ---
 
-### Step 6: Solution Architecture
-**Objective:** Design the technical solution architecture.
+### Step 6: Logic Branching Discovery
+**Objective:** Trace execution paths, conditional branches, and cross-feature dependencies to surface potential conflicts and unexpected behaviors relevant to the task.
 
-Load and follow: prompts/06-solution-architecture.md
+Load and follow: prompts/06-logic-branching-discovery.md
 
 **User Request:** {{USER_REQUEST}}
 
 ---
 
-### Step 7: Implementation Plan
+### Step 7: Solution Architecture
+**Objective:** Design the technical solution architecture.
+
+Load and follow: prompts/07-solution-architecture.md
+
+**User Request:** {{USER_REQUEST}}
+
+---
+
+### Step 8: Implementation Plan
 **Objective:** Create a detailed, step-by-step implementation plan.
 
-Load and follow: prompts/07-implementation-plan.md
+Load and follow: prompts/08-implementation-plan.md
 
 **User Request:** {{USER_REQUEST}}
 
@@ -83,38 +92,38 @@ Load and follow: prompts/07-implementation-plan.md
 
 ---
 
-### Step 8: Implementation Execution
+### Step 9: Implementation Execution
 **Objective:** Execute the implementation plan and write code.
 
-Load and follow: prompts/08-implementation-execution.md
+Load and follow: prompts/09-implementation-execution.md
 
 **User Request:** {{USER_REQUEST}}
 
 ---
 
-### Step 9: Validation
+### Step 10: Validation
 **Objective:** Verify the implementation meets requirements and quality standards.
 
-Load and follow: prompts/09-validation.md
+Load and follow: prompts/10-validation.md
 
 **User Request:** {{USER_REQUEST}}
 
 ---
 
-### Step 10: Regression Patching (OPTIONAL)
-**Objective:** Address any validation failures or regressions discovered in Step 9.
+### Step 11: Regression Patching (OPTIONAL)
+**Objective:** Address any validation failures or regressions discovered in Step 10.
 
-Load and follow: prompts/10-regression-patching.md
+Load and follow: prompts/11-regression-patching.md
 
 **User Request:** {{USER_REQUEST}}
 
-**Trigger:** Only execute this step if Step 9 validation reveals failures, errors, or regressions that need fixing. Skip if all validations passed.
+**Trigger:** Only execute this step if Step 10 validation reveals failures, errors, or regressions that need fixing. Skip if all validations passed.
 
 ---
 
 ## Completion Loop
 
-After completing Step 9 (or Step 10 if executed), use **AskUserQuestion** to check user satisfaction:
+After completing Step 10 (or Step 11 if executed), use **AskUserQuestion** to check user satisfaction:
 
 **Summary includes:**
 - Changes implemented
@@ -130,3 +139,4 @@ After completing Step 9 (or Step 10 if executed), use **AskUserQuestion** to che
 - Iterate through all steps again
 
 ### If User is Satisfied:
+End the workflow.

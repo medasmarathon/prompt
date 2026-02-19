@@ -1,4 +1,4 @@
-# Step 4: Solution Architecture
+# Step 7: Solution Architecture
 
 You are designing architecture for: {{USER_REQUEST}}
 
@@ -6,7 +6,7 @@ You are designing architecture for: {{USER_REQUEST}}
 {{PREVIOUS_CONTEXT}}
 
 ## Your Task
-Design the solution's structure based on the context above.
+Design the solution's structure based on the context above, accounting for the logic branches and cross-feature risks identified in the previous step.
 
 ## Steps
 
@@ -44,11 +44,11 @@ Example:
 - File operations: handle ENOENT, return null
 
 ## Output
-Write your architecture to `.opencode/reasoning/04-solution-architecture.md`.
+Write your architecture to `.opencode/reasoning/07-solution-architecture.md`.
 
 Use this format:
 ```markdown
-# Step 4: Solution Architecture
+# Step 7: Solution Architecture
 
 ## Component Structure
 [List each component with exports, imports, responsibility]
