@@ -45,7 +45,7 @@ Follow the loaded workflow instructions exactly.
 
 ## CRITICAL RULE
 
-**MANDATORY:** All agents (subagents) MUST use AskUserQuestion for:
+**MANDATORY:** All agents (subagents) MUST use AskUserQuestion (or similar tool for interactive feedback) for:
 - Progress reports after each step
 - User confirmations
 - ANY user interaction
@@ -59,4 +59,4 @@ Follow the loaded workflow instructions exactly.
 
 1. Identify workflow type using keywords
 2. Read appropriate workflow file
-3. Execute workflow steps WITH subagents for each step
+3. Execute workflow steps WITH subagents for each step. MUST follow instructions in workflow file exactly.
