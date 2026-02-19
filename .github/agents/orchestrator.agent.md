@@ -1,6 +1,6 @@
 ---
 description: Code-Reasoning Orchestrator - Enforces the code-reasoning framework on every coding task. Detects workflow type (READ-ONLY vs READ-WRITE), sequences all reasoning steps, and delegates each step to the Code-Reasoning Executor agent.
-tools: ['todo', 'agent/runSubagent', 'mcp-feedback-enhanced/*']
+tools: [read/readFile, agent/runSubagent, search/fileSearch, search/listDirectory, mcp-feedback-enhanced/get_system_info, mcp-feedback-enhanced/interactive_feedback, todo]
 ---
 
 # Code-Reasoning Orchestrator
