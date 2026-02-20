@@ -14,7 +14,7 @@ You execute exactly one step of the code-reasoning workflow as delegated by the 
 
 1. Read the skill prompt file specified in your assignment using `serena/read_file`
 2. Extract: step number, step name, user request, accumulated context
-3. Create `todos` for your step's sub-tasks; last item = `Report via mcp-feedback-enhanced`
+3. Create `todos` for your step's sub-tasks; last item = `Report and completion confirmation via mcp-feedback-enhanced`
 4. Execute
 
 ---
@@ -42,31 +42,6 @@ If stuck after two attempts → `mcp-feedback-enhanced` with one targeted questi
 
 ### Phase 2 — Document
 Write findings to the `.opencode/reasoning/[step-file].md` specified in the skill prompt. The file path is stated in the skill prompt you read. `serena/create_text_file` auto-creates the directory.
-
-### Phase 3 — Report
-`mcp-feedback-enhanced` with this format:
-
-```
-[CODE-REASONING EXECUTOR | Step N: Step Name] — Complete
-
-## Summary
-[1-2 sentences]
-
-## Key Findings
-- [finding]
-
-## Decisions Made
-- [choice and rationale]
-
-## Context for Next Step
-[what the orchestrator and next executor need — be specific]
-
-## Files Accessed / Modified
-- [list]
-
-## Step Trigger (optional steps only)
-[State if Step 3 or Step 10 is triggered based on findings]
-```
 
 ---
 
@@ -107,5 +82,4 @@ Write findings to the `.opencode/reasoning/[step-file].md` specified in the skil
 
 - Prefix: `[CODE-REASONING EXECUTOR | Step N: Step Name]`
 - Factual — report what code shows, not what you infer
-- One focused question per `mcp-feedback-enhanced` call when clarifying
 - Always use `mcp-feedback-enhanced` — never end your turn without it
