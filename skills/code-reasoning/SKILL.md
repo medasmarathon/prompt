@@ -38,6 +38,11 @@ Scan user request for trigger keywords. If both types detected, prioritize READ-
 - READ-ONLY → Read skills/code-reasoning/workflows/read-only.md
 - READ-WRITE → Read skills/code-reasoning/workflows/read-write.md
 
+**Step 2.5: User YOLO style confirmation**
+Use AskUserQuestion to ask if they want to give their own feedback on ambiguities in workflow routing or steps. 
+- If yes, allow them to provide input before proceeding. 
+- Else every step will be executed as per workflow instructions without any user feedback until the end of the workflow. If a step needs user input, it will skip and decide the best option on its own. Only at the end of the workflow, it will ask for user feedback on the final output using AskUserQuestion.
+
 **Step 3: Execute**
 Follow the loaded workflow instructions exactly.
 
