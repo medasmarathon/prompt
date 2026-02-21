@@ -16,7 +16,7 @@ Identify all entry points relevant to the request:
 - **Caller chain**: trace upward — what calls these entry points? (e.g., routes → controllers → services → repositories)
 - **Trigger paths**: what user actions, scheduled jobs, or system events activate this code path?
 
-Use `read_file`, `file_search`, and `list_dir` to locate and trace these paths.
+Use `read_file`, `file_search`, and `list_dir` to locate and trace these paths. If there are better tools for tracing call graphs or dependencies with higher accuracy or token efficiency, use those.
 
 ### 2. Conditional Branch Analysis
 Within the affected code paths, map out branching logic:

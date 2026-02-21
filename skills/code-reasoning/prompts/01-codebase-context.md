@@ -8,7 +8,7 @@ Find and document relevant code without reading entire files.
 ## Steps
 
 ### 1. Find Relevant Files
-Use targeted search to locate files (limit to 10 most relevant):
+Use targeted search to locate files (limit to 10 most relevant). This is an example of how to search for files related to a specific topic or component. Use the best tool available to you for searching files based on their names or content or semantic structure. Focus on finding files that are most likely to contain relevant information for the user's request.:
 
 **By filename:**
 - Windows: `Get-ChildItem -Recurse -Filter "*name*" | Select-Object -First 10`
