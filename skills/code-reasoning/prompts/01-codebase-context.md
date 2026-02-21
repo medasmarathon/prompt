@@ -34,3 +34,6 @@ Write to `.opencode/reasoning/01-codebase-context.md`:
 - Component purpose ONLY if explicitly clear from naming/comments - do NOT infer or assume
 
 Use AskUserQuestion to report completion with key findings.
+
+## Output
+Write to `.opencode/reasoning/01-codebase-context.md` using Write tool.

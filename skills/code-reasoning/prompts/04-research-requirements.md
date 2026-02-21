@@ -35,3 +35,6 @@ For each topic, document:
 Write to `.opencode/reasoning/04-research-requirements.md`.
 
 Use AskUserQuestion: "Research complete. [X] topics done. Key: [2-3 points]. Ready for Step 4?"
+
+## Output
+Write to `.opencode/reasoning/04-research-requirements.md` using Write tool.

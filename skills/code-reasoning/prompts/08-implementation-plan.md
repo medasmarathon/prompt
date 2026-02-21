@@ -49,3 +49,6 @@ List tasks in order with these details:
 Write to `.opencode/reasoning/08-implementation-plan.md`.
 
 Use AskUserQuestion to report completion with task count.
+
+## Output
+Write to `.opencode/reasoning/08-implementation-plan.md` using Write tool.

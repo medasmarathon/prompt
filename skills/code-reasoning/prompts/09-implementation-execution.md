@@ -40,3 +40,6 @@ If creating new file:
 - Use AskUserQuestion to report completion
 - List all files created/modified
 - Confirm all tasks from plan are done
+
+## Output
+Write to `.opencode/reasoning/09-implementation-execution.md` using Write tool.

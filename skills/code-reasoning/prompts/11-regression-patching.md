@@ -61,3 +61,4 @@ Write `.opencode/reasoning/11-regression-patching.md`:
 ---
 
 **Output:** Decision (PATCH or RESTART) + context file if MAJOR
+Write to `.opencode/reasoning/11-regression-patching.md` using Write tool.

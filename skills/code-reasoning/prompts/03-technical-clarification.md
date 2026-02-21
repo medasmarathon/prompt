@@ -40,3 +40,4 @@ Use AskUserQuestion to ask all questions. Record answers for next steps.
 **Fallback:** If AskUserQuestion tool unavailable, create summary file with questions. User will fill in responses for later steps.
 
 ## Output
+Write to .opencode/reasoning/03-technical-clarification.md using Write tool.
