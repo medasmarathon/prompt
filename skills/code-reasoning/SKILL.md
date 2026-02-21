@@ -47,8 +47,7 @@ Follow the loaded workflow instructions exactly.
 
 **MANDATORY:** All agents (subagents) MUST use AskUserQuestion (or similar tool for interactive feedback) for:
 - Progress reports after each step
-- User confirmations
-- ANY user interaction
+- ANY user interaction (clarifications, additional info, etc.)
 
 **NEVER return control without using AskUserQuestion.**
 **ALWAYS** start subagents for each step in workflow to maintain context clarity. I will be very strict about this. Do not execute steps yourself. Always spawn an executor agent for each step.
